@@ -16,22 +16,28 @@
             font-family: sans-serif;
             overflow: hidden;
             text-align: center;
-            transition: background-color 0.5s;
         }
-        h1 { color: #d63384; margin-bottom: 20px; padding: 0 20px; line-height: 1.5; z-index: 10; }
-        .btn-container { position: relative; width: 100%; height: 100px; z-index: 10; }
+        h1 { color: #d63384; margin-bottom: 20px; padding: 0 20px; }
+        .btn-container { position: relative; width: 100%; height: 100px; }
         button {
             padding: 15px 30px;
             font-size: 20px;
             cursor: pointer;
             border: none;
             border-radius: 50px;
-            transition: 0.2s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         #yesBtn { background-color: #ff4d6d; color: white; margin-right: 10px; }
         #noBtn { background-color: #6c757d; color: white; position: absolute; }
         .hidden { display: none !important; }
+        
+        /* Success Page Layout */
+        #lovePage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
         .profile-img {
             width: 180px;
             height: 180px;
@@ -39,44 +45,41 @@
             border-radius: 20px;
             border: 5px solid white;
             box-shadow: 0 0 25px #ff4d6d;
-            margin-bottom: 20px;
         }
-        .sticker { width: 150px; height: auto; margin-top: 15px; }
+        
+        /* BIG MUSIC BUTTON AT THE TOP */
+        .music-on-top {
+            background-color: #d63384;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border: 3px solid white;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
         .heart {
             position: fixed;
             color: #ff4d6d;
             font-size: 25px;
             animation: moveUp 4s linear infinite;
             top: 100%;
-            z-index: 1;
         }
         @keyframes moveUp {
             to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
-        }
-        
-        /* THE NEW MUSIC BUTTON */
-        .music-button {
-            margin-top: 25px;
-            background-color: #d63384;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 100;
-        }
-        .music-button:active {
-            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
-    <!-- First Interface -->
     <div id="mainPage">
-        <img src="https://media.tenor.com/7S_6S6G8j8EAAAAi/peach-goma.gif" style="width: 120px;">
+        <img src="https://media.tenor.com/7S_6S6G8j8EAAAAi/peach-goma.gif" style="width: 100px;">
         <h1 id="mainText">ပြန်ချစ်ပေးပါနော်🥺🫶</h1>
         <div class="btn-container">
             <button id="yesBtn" onclick="startEverything()">ချစ်တယ်</button>
@@ -84,19 +87,15 @@
         </div>
     </div>
 
-    <!-- Success Page -->
     <div id="lovePage" class="hidden">
+        <!-- THE BUTTON IS NOW AT THE TOP -->
+        <button class="music-on-top" id="playBtn" onclick="playMusic()">သီချင်းဖွင့်ရန် 🎵 (CLICK HERE)</button>
+        
         <img src="6827.jpg" alt="Our Photo" class="profile-img">
-        <h2 style="color: #d63384; line-height: 1.6;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
-        <img src="https://media.tenor.com/vS_86_zYm94AAAAi/bubu-dudu-bubu.gif" class="sticker">
-        
-        <p style="color: #d63384; font-size: 14px; margin-top: 10px;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
-        
-        <!-- THIS IS THE BUTTON SHE WILL CLICK TO START MUSIC -->
-        <button class="music-button" onclick="playMusic()">သီချင်းဖွင့်ရန် 🎵</button>
+        <h2 style="color: #d63384; margin-top: 15px;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
+        <p style="color: #d63384;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
     </div>
 
-    <!-- Hidden Audio Tag -->
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
@@ -113,49 +112,20 @@
             noBtn.style.top = y + 'px';
         }
 
-        // Play function
         function playMusic() {
             music.play();
-            // Hide the play button after she clicks it to keep it clean
-            document.querySelector('.music-button').style.display = 'none';
+            // Hide only the music button after playing
+            document.getElementById('playBtn').style.display = 'none';
         }
 
         function startEverything() {
-            // Hide first page, show second
             document.getElementById('mainPage').classList.add('hidden');
             document.getElementById('lovePage').classList.remove('hidden');
             document.body.style.backgroundColor = "#ffc1cc";
             
-            // Try auto-play (some browsers might allow it here)
-            music.play().catch(() => {
-                console.log("Waiting for manual click...");
-            });
-
-            startHearts();
-        }
-
-        function startHearts() {
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
-                document.body.appendChild(heart);
-                setTimeout(() => { heart.remove(); }, 4000);
-            }, 300);
-        }
-    </script>
-</body>
-</html>
-            // Attempt to play music
-            music.play().catch(e => {
-                console.log("Autoplay blocked. User can use the visible player.");
-            });
-
-            document.getElementById('mainPage').classList.add('hidden');
-            document.getElementById('lovePage').classList.remove('hidden');
-            document.body.style.backgroundColor = "#ffc1cc";
+            // Try to auto-play
+            music.play().catch(() => { console.log("Blocked"); });
+            
             startHearts();
         }
 
