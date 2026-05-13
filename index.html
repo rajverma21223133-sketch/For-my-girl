@@ -53,16 +53,16 @@
         @keyframes moveUp {
             to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
-        /* Style for the Play Button if music gets blocked */
-        #music-fix {
-            margin-top: 15px;
-            background: #d63384;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            display: inline-block;
-            cursor: pointer;
+        /* Music Control Bar */
+        .music-player {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -81,15 +81,15 @@
         <img src="6827.jpg" alt="Our Photo" class="profile-img">
         <h2 style="color: #d63384; line-height: 1.6;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
         <img src="https://media.tenor.com/vS_86_zYm94AAAAi/bubu-dudu-bubu.gif" class="sticker">
-        <p style="color: #d63384; font-size: 14px; margin-top: 10px;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
         
-        <!-- Manual play button in case auto-play is blocked -->
-        <div id="music-fix" onclick="playMusic()">သီချင်းဖွင့်ရန် 🎵</div>
+        <div class="music-player">
+            <span style="font-size: 14px; color: #d63384;">🎶 အတ္တကမ္ဘာကြီးထဲ</span>
+            <!-- Visible controls so she can play it manually if auto fails -->
+            <audio id="bgMusic" controls style="height: 30px; width: 200px;">
+                <source src="music.mp3" type="audio/mpeg">
+            </audio>
+        </div>
     </div>
-
-    <audio id="bgMusic" loop preload="auto">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
 
     <script>
         const music = document.getElementById('bgMusic');
@@ -103,14 +103,11 @@
             noBtn.style.top = y + 'px';
         }
 
-        function playMusic() {
-            music.muted = false;
-            music.play().catch(e => console.log("Still blocked"));
-        }
-
         function startEverything() {
-            // Try to play immediately on click
-            playMusic();
+            // Attempt to play music
+            music.play().catch(e => {
+                console.log("Autoplay blocked. User can use the visible player.");
+            });
 
             document.getElementById('mainPage').classList.add('hidden');
             document.getElementById('lovePage').classList.remove('hidden');
