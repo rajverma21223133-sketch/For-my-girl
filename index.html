@@ -17,11 +17,8 @@
             overflow: hidden;
             text-align: center;
         }
-
         h1 { color: #d63384; margin-bottom: 20px; padding: 0 20px; line-height: 1.5; z-index: 10; }
-
         .btn-container { position: relative; width: 100%; height: 100px; z-index: 10; }
-
         button {
             padding: 15px 30px;
             font-size: 20px;
@@ -31,9 +28,7 @@
             transition: 0.2s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-
         #yesBtn { background-color: #ff4d6d; color: white; }
-
         #noBtn {
             background-color: #6c757d;
             color: white;
@@ -41,10 +36,7 @@
             left: 50%;
             transform: translateX(50px);
         }
-
         .hidden { display: none; }
-
-        /* Photo Styling from your screenshot */
         .profile-img {
             width: 150px;
             height: 150px;
@@ -54,11 +46,7 @@
             box-shadow: 0 0 20px #ff4d6d;
             margin-bottom: 20px;
         }
-
-        /* Stickers */
         .sticker { width: 140px; height: auto; margin-top: 10px; }
-
-        /* Heart Flooding */
         .heart {
             position: fixed;
             color: #ff4d6d;
@@ -67,11 +55,9 @@
             top: 100%;
             z-index: 1;
         }
-
         @keyframes moveUp {
             to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
         }
-
         .song-title { color: #d63384; font-size: 14px; margin-top: 15px; opacity: 0.8; }
     </style>
 </head>
@@ -89,21 +75,55 @@
 
     <!-- Success Page -->
     <div id="lovePage" class="hidden">
-        <!-- Your Photo -->
         <img src="6827.jpg" alt="Our Photo" class="profile-img">
-        
         <h2 style="color: #d63384; line-height: 1.6; padding: 0 15px;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
-        
-        <!-- Bubu Dudu Sticker -->
         <img src="https://media.tenor.com/vS_86_zYm94AAAAi/bubu-dudu-bubu.gif" alt="Happy Sticker" class="sticker">
-        
         <p class="song-title">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
 
-        <!-- Change this source to your mp3 file name -->
+        <!-- Corrected Music Link -->
         <audio id="bgMusic" loop>
-            <source src="your-song-file.mp3" type="audio/mpeg">
+            <source src="music.mp3" type="audio/mpeg">
         </audio>
     </div>
+
+    <script>
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const mainText = document.getElementById('mainText');
+            mainText.innerText = "မငြင်းပါနဲ့ ချစ်ပေးပါ 🥺";
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 100);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        function showLove() {
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('lovePage').classList.remove('hidden');
+            document.body.style.backgroundColor = "#ffc1cc";
+            
+            // This starts the music when the button is clicked
+            var music = document.getElementById('bgMusic');
+            music.play();
+            
+            startHearts();
+        }
+
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 4000);
+            }, 200);
+        }
+    </script>
+</body>
+</html>
 
     <script>
         function moveButton() {
