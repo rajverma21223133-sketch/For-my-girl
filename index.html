@@ -16,6 +16,7 @@
             font-family: sans-serif;
             overflow: hidden;
             text-align: center;
+            transition: background-color 0.5s;
         }
         h1 { color: #d63384; margin-bottom: 20px; padding: 0 20px; line-height: 1.5; z-index: 10; }
         .btn-container { position: relative; width: 100%; height: 100px; z-index: 10; }
@@ -28,25 +29,19 @@
             transition: 0.2s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        #yesBtn { background-color: #ff4d6d; color: white; }
-        #noBtn {
-            background-color: #6c757d;
-            color: white;
-            position: absolute;
-            left: 50%;
-            transform: translateX(50px);
-        }
-        .hidden { display: none; }
+        #yesBtn { background-color: #ff4d6d; color: white; margin-right: 10px; }
+        #noBtn { background-color: #6c757d; color: white; position: absolute; }
+        .hidden { display: none !important; }
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             object-fit: cover;
-            border-radius: 25px;
-            border: 4px solid white;
-            box-shadow: 0 0 20px #ff4d6d;
+            border-radius: 20px;
+            border: 5px solid white;
+            box-shadow: 0 0 25px #ff4d6d;
             margin-bottom: 20px;
         }
-        .sticker { width: 140px; height: auto; margin-top: 10px; }
+        .sticker { width: 150px; height: auto; margin-top: 15px; }
         .heart {
             position: fixed;
             color: #ff4d6d;
@@ -56,57 +51,70 @@
             z-index: 1;
         }
         @keyframes moveUp {
-            to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+            to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
-        .song-title { color: #d63384; font-size: 14px; margin-top: 15px; opacity: 0.8; }
+        /* Style for the Play Button if music gets blocked */
+        #music-fix {
+            margin-top: 15px;
+            background: #d63384;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <!-- First Interface -->
     <div id="mainPage">
-        <img src="https://media.tenor.com/7S_6S6G8j8EAAAAi/peach-goma.gif" style="width: 120px;" alt="Sticker">
-        <h1 id="mainText">ပြန်ချစ်ပေပါနော်🥺🫶</h1>
+        <img src="https://media.tenor.com/7S_6S6G8j8EAAAAi/peach-goma.gif" style="width: 120px;">
+        <h1 id="mainText">ပြန်ချစ်ပေးပါနော်🥺🫶</h1>
         <div class="btn-container">
-            <button id="yesBtn" onclick="showLove()">ချစ်တယ်</button>
+            <button id="yesBtn" onclick="startEverything()">ချစ်တယ်</button>
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">ငြင်းတယ်</button>
         </div>
     </div>
 
-    <!-- Success Page -->
     <div id="lovePage" class="hidden">
         <img src="6827.jpg" alt="Our Photo" class="profile-img">
-        <h2 style="color: #d63384; line-height: 1.6; padding: 0 15px;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
-        <img src="https://media.tenor.com/vS_86_zYm94AAAAi/bubu-dudu-bubu.gif" alt="Happy Sticker" class="sticker">
-        <p class="song-title">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
-
-        <!-- Corrected Music Link -->
-        <audio id="bgMusic" loop>
-            <source src="music.mp3" type="audio/mpeg">
-        </audio>
+        <h2 style="color: #d63384; line-height: 1.6;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
+        <img src="https://media.tenor.com/vS_86_zYm94AAAAi/bubu-dudu-bubu.gif" class="sticker">
+        <p style="color: #d63384; font-size: 14px; margin-top: 10px;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
+        
+        <!-- Manual play button in case auto-play is blocked -->
+        <div id="music-fix" onclick="playMusic()">သီချင်းဖွင့်ရန် 🎵</div>
     </div>
 
+    <audio id="bgMusic" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
+        const music = document.getElementById('bgMusic');
+
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
-            const mainText = document.getElementById('mainText');
-            mainText.innerText = "မငြင်းပါနဲ့ ချစ်ပေးပါ 🥺";
-            const x = Math.random() * (window.innerWidth - 150);
-            const y = Math.random() * (window.innerHeight - 100);
-            noBtn.style.position = 'fixed';
+            document.getElementById('mainText').innerText = "မငြင်းပါနဲ့ ချစ်ပေးပါ 🥺";
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 80);
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
         }
 
-        function showLove() {
+        function playMusic() {
+            music.muted = false;
+            music.play().catch(e => console.log("Still blocked"));
+        }
+
+        function startEverything() {
+            // Try to play immediately on click
+            playMusic();
+
             document.getElementById('mainPage').classList.add('hidden');
             document.getElementById('lovePage').classList.remove('hidden');
             document.body.style.backgroundColor = "#ffc1cc";
-            
-            // This starts the music when the button is clicked
-            var music = document.getElementById('bgMusic');
-            music.play();
-            
             startHearts();
         }
 
@@ -119,45 +127,7 @@
                 heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
                 document.body.appendChild(heart);
                 setTimeout(() => { heart.remove(); }, 4000);
-            }, 200);
-        }
-    </script>
-</body>
-</html>
-
-    <script>
-        function moveButton() {
-            const noBtn = document.getElementById('noBtn');
-            const mainText = document.getElementById('mainText');
-            mainText.innerText = "မငြင်းပါနဲ့ ချစ်ပေးပါ 🥺";
-            const x = Math.random() * (window.innerWidth - 150);
-            const y = Math.random() * (window.innerHeight - 100);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-        }
-
-        function showLove() {
-            document.getElementById('mainPage').classList.add('hidden');
-            document.getElementById('lovePage').classList.remove('hidden');
-            document.body.style.backgroundColor = "#ffc1cc";
-            
-            const music = document.getElementById('bgMusic');
-            music.play();
-            
-            startHearts();
-        }
-
-        function startHearts() {
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
-                document.body.appendChild(heart);
-                setTimeout(() => { heart.remove(); }, 4000);
-            }, 200);
+            }, 300);
         }
     </script>
 </body>
