@@ -53,21 +53,28 @@
         @keyframes moveUp {
             to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
-        /* Music Control Bar */
-        .music-player {
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
+        
+        /* THE NEW MUSIC BUTTON */
+        .music-button {
+            margin-top: 25px;
+            background-color: #d63384;
+            color: white;
+            padding: 12px 25px;
             border-radius: 30px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        .music-button:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
 <body>
 
+    <!-- First Interface -->
     <div id="mainPage">
         <img src="https://media.tenor.com/7S_6S6G8j8EAAAAi/peach-goma.gif" style="width: 120px;">
         <h1 id="mainText">ပြန်ချစ်ပေးပါနော်🥺🫶</h1>
@@ -77,19 +84,22 @@
         </div>
     </div>
 
+    <!-- Success Page -->
     <div id="lovePage" class="hidden">
         <img src="6827.jpg" alt="Our Photo" class="profile-img">
         <h2 style="color: #d63384; line-height: 1.6;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
         <img src="https://media.tenor.com/vS_86_zYm94AAAAi/bubu-dudu-bubu.gif" class="sticker">
         
-        <div class="music-player">
-            <span style="font-size: 14px; color: #d63384;">🎶 အတ္တကမ္ဘာကြီးထဲ</span>
-            <!-- Visible controls so she can play it manually if auto fails -->
-            <audio id="bgMusic" controls style="height: 30px; width: 200px;">
-                <source src="music.mp3" type="audio/mpeg">
-            </audio>
-        </div>
+        <p style="color: #d63384; font-size: 14px; margin-top: 10px;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
+        
+        <!-- THIS IS THE BUTTON SHE WILL CLICK TO START MUSIC -->
+        <button class="music-button" onclick="playMusic()">သီချင်းဖွင့်ရန် 🎵</button>
     </div>
+
+    <!-- Hidden Audio Tag -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const music = document.getElementById('bgMusic');
@@ -103,7 +113,41 @@
             noBtn.style.top = y + 'px';
         }
 
+        // Play function
+        function playMusic() {
+            music.play();
+            // Hide the play button after she clicks it to keep it clean
+            document.querySelector('.music-button').style.display = 'none';
+        }
+
         function startEverything() {
+            // Hide first page, show second
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('lovePage').classList.remove('hidden');
+            document.body.style.backgroundColor = "#ffc1cc";
+            
+            // Try auto-play (some browsers might allow it here)
+            music.play().catch(() => {
+                console.log("Waiting for manual click...");
+            });
+
+            startHearts();
+        }
+
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 4000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
             // Attempt to play music
             music.play().catch(e => {
                 console.log("Autoplay blocked. User can use the visible player.");
