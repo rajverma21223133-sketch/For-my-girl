@@ -5,47 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Girl 💖</title>
     <style>
-        :root {
-            --primary-pink: #ff4d6d;
-            --deep-pink: #c9184a;
-            --glass: rgba(255, 255, 255, 0.8);
-        }
-
         body {
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            background: #ffeef2;
             font-family: sans-serif;
             overflow: hidden;
             text-align: center;
         }
-
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 40px 20px;
             border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 85%;
             max-width: 350px;
-            z-index: 10;
         }
-
-        h1 { color: var(--deep-pink); font-size: 24px; margin-bottom: 30px; }
-
-        /* FIXED BUTTON CONTAINER */
+        h1 { color: #d63384; font-size: 24px; margin-bottom: 30px; }
         .btn-wrap {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 15px;
-            min-height: 60px;
-            position: relative;
+            height: 50px;
         }
-
         button {
             padding: 12px 25px;
             font-size: 18px;
@@ -53,48 +39,31 @@
             border-radius: 50px;
             border: none;
             cursor: pointer;
-            transition: 0.3s;
         }
-
-        #yesBtn { 
-            background: var(--primary-pink); 
-            color: white;
-            z-index: 11;
-        }
-
-        #noBtn { 
-            background: #adb5bd; 
-            color: white; 
-            position: relative;
-        }
-
+        #yesBtn { background: #ff4d6d; color: white; }
+        #noBtn { background: #adb5bd; color: white; position: relative; }
         .hidden { display: none !important; }
-
         .profile-img {
             width: 180px;
             height: 180px;
             object-fit: cover;
             border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 5px 20px rgba(255, 77, 109, 0.3);
+            border: 5px solid #ff4d6d;
             margin-bottom: 20px;
         }
-
         .music-btn {
-            background: var(--deep-pink);
+            background: #d63384;
             color: white;
             padding: 10px 20px;
             margin-top: 15px;
             border-radius: 30px;
         }
-
         .heart {
             position: fixed;
-            color: var(--primary-pink);
+            color: #ff4d6d;
             top: 100%;
             animation: rain 4s linear infinite;
         }
-
         @keyframes rain {
             to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
@@ -106,16 +75,16 @@
         <img src="https://media.tenor.com/7S_6S6G8j8EAAAAi/peach-goma.gif" style="width: 100px; margin-bottom: 10px;">
         <h1>ပြန်ချစ်ပေးပါနော်🥺🫶</h1>
         <div class="btn-wrap">
-                <button id="yesBtn" onclick="initiateLove()">ချစ်တယ်</button>
-            <button id="noBtn" onmouseover="dodgeButton()" onclick="dodgeButton()">ငြင်းတယ်</button>
+            <button id="yesBtn" onclick="openLovePage()">ချစ်တယ်</button>
+            <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">ငြင်းတယ်</button>
         </div>
     </div>
 
     <div id="lovePage" class="card hidden">
         <img src="6827.jpg" alt="Memory" class="profile-img">
-        <h2 style="color: #c9184a; font-size: 20px;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
-        <p style="color: #ff4d6d; font-size: 14px;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
-        <button class="music-btn" id="playBtn" onclick="forceMusic()">သီချင်းဖွင့်ရန် 🎵</button>
+        <h2 style="color: #d63384; font-size: 20px;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
+        <p style="color: #ff4d6d;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
+        <button class="music-btn" id="playBtn" onclick="startMusic()">သီချင်းဖွင့်ရန် 🎵</button>
     </div>
 
     <audio id="bgMusic" loop>
@@ -125,30 +94,30 @@
     <script>
         const music = document.getElementById('bgMusic');
 
-        function dodgeButton() {
+        function moveNo() {
             const noBtn = document.getElementById('noBtn');
-            noBtn.style.position = "fixed"; // Switch to fixed once she tries to click
-            document.querySelector('h1').innerText = "မငြင်းပါနဲ့ ချစ်ပေးပါ 🥺";
+            noBtn.style.position = "fixed";
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
         }
 
-        function forceMusic() {
+        function startMusic() {
             music.play();
             document.getElementById('playBtn').style.display = 'none';
         }
 
-        function initiateLove() {
-            document.getElementById('mainPage').classList.add('hidden');
+        function openLovePage() {
+            // This is the part that was "stuck"
+            document.getElementById('mainPage').style.display = 'none';
             document.getElementById('lovePage').classList.remove('hidden');
-            document.body.style.background = "linear-gradient(135deg, #ffccd5 0%, #ffb3c1 100%)";
-            music.play().catch(() => { console.log("Blocked"); });
-            spawnHearts();
-        }
-
-        function spawnHearts() {
+            document.body.style.background = "#ffccd5";
+            
+            // Try to start music automatically
+            music.play().catch(() => { console.log("Click the button for music"); });
+            
+            // Start hearts
             setInterval(() => {
                 const heart = document.createElement('div');
                 heart.classList.add('heart');
@@ -162,3 +131,4 @@
     </script>
 </body>
 </html>
+
