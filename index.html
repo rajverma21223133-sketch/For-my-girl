@@ -104,7 +104,10 @@
             document.getElementById('mainPage').classList.add('hidden');
             document.getElementById('lovePage').classList.remove('hidden');
             document.body.style.backgroundColor = "#ffc1cc";
-            music.play().catch(() => { console.log("Blocked"); });
+            
+            // Attempt auto-play, if it fails, she can use the button
+            music.play().catch(() => { console.log("Music blocked by browser"); });
+            
             startHearts();
         }
 
@@ -122,4 +125,5 @@
     </script>
 </body>
 </html>
+
 
