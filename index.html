@@ -30,14 +30,6 @@
         #yesBtn { background-color: #ff4d6d; color: white; margin-right: 10px; }
         #noBtn { background-color: #6c757d; color: white; position: absolute; }
         .hidden { display: none !important; }
-        
-        /* Success Page Layout */
-        #lovePage {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
         .profile-img {
             width: 180px;
             height: 180px;
@@ -45,24 +37,17 @@
             border-radius: 20px;
             border: 5px solid white;
             box-shadow: 0 0 25px #ff4d6d;
+            margin-bottom: 20px;
         }
-        
-        /* BIG MUSIC BUTTON AT THE TOP */
-        .music-on-top {
+        .music-button {
             background-color: #d63384;
             color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            border: 3px solid white;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            border: none;
+            margin-top: 20px;
+            z-index: 100;
         }
         .heart {
             position: fixed;
@@ -88,12 +73,10 @@
     </div>
 
     <div id="lovePage" class="hidden">
-        <!-- THE BUTTON IS NOW AT THE TOP -->
-        <button class="music-on-top" id="playBtn" onclick="playMusic()">သီချင်းဖွင့်ရန် 🎵 (CLICK HERE)</button>
-        
         <img src="6827.jpg" alt="Our Photo" class="profile-img">
-        <h2 style="color: #d63384; margin-top: 15px;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
-        <p style="color: #d63384;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
+        <h2 style="color: #d63384; line-height: 1.6;">ပြန်လာပေးတဲ့အတွက် ကျေးဇူးပါ <br> ကိုယ်ချစ်ရတဲ့ ကလေးမရယ် 🥺</h2>
+        <p style="color: #d63384; font-size: 14px;">🎶 အတ္တကမ္ဘာကြီးထဲ</p>
+        <button class="music-button" id="playBtn" onclick="playMusic()">သီချင်းဖွင့်ရန် 🎵</button>
     </div>
 
     <audio id="bgMusic" loop>
@@ -114,7 +97,6 @@
 
         function playMusic() {
             music.play();
-            // Hide only the music button after playing
             document.getElementById('playBtn').style.display = 'none';
         }
 
@@ -122,10 +104,7 @@
             document.getElementById('mainPage').classList.add('hidden');
             document.getElementById('lovePage').classList.remove('hidden');
             document.body.style.backgroundColor = "#ffc1cc";
-            
-            // Try to auto-play
             music.play().catch(() => { console.log("Blocked"); });
-            
             startHearts();
         }
 
@@ -143,3 +122,4 @@
     </script>
 </body>
 </html>
+
